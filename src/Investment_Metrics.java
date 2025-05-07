@@ -8,8 +8,8 @@ public class Investment_Metrics {
     private TreeMap<LocalDate, Double> valueSnapshots;   // Using TreeMap for sorted dates
     private double initialInvestment;
 
-    public Investment_Metrics(double initialInvestment) {
-        this.initialInvestment = initialInvestment;
+    public Investment_Metrics(double IinitialInvestment) {
+        this.initialInvestment = InitialInvestment;
         this.asset_distribution = new TreeMap<>();
         this.valueSnapshots = new TreeMap<>();
     }
