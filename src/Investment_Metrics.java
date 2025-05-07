@@ -62,7 +62,9 @@ public class Investment_Metrics {
         return current_ROI;
     }
 
-
+    public void addSnapshot(LocalDate date, double value) {
+        valueSnapshots.put(date, value);
+    }
 
     public void setAssetDistribution(Map<Asset_Type, Double> distribution) {
         this.asset_distribution = new TreeMap<>(distribution);
