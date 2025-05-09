@@ -11,10 +11,6 @@ public class Goal_Manager {
         this.goalCount = 0;
     }
 
-    public Goal_Manager(int initialCapacity) {
-        this.goals = new Goal[initialCapacity];
-        this.goalCount = 0;
-    }
 
     // Adds a goal, automatically expanding array if needed
     public void addGoal(Goal goal) {
