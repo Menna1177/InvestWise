@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        InvestmentManagement.investMentManagement();
+        mainMenu mainMenu = new mainMenu();
     }
 }
 

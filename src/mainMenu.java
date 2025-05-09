@@ -33,6 +33,7 @@ public class mainMenu {
                     try {
                         manager.registerUser(name, email, username, pass);
                         System.out.println("Registration successful!");
+                        InvestmentManagement.investMentManagement();
                         break;
 
                     } catch (IOException e) {
