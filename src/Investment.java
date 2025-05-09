@@ -119,7 +119,8 @@ public class Investment {
 
     public void removeAsset(Asset asset) {
         if (!investmentAssets.remove(asset)) {
-            throw new IllegalArgumentException("Asset not found in portfolio");
+            System.out.println("Asset not found in portfolio");
+            return;
         }
         currentValue -= asset.getValue();
         metrics.updateMetrics(asset.getType(), -asset.getValue(), LocalDate.now());

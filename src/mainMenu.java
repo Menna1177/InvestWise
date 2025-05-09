@@ -33,6 +33,7 @@ public class mainMenu {
                     try {
                         manager.registerUser(name, email, username, pass);
                         System.out.println("Registration successful!");
+                        break;
 
                     } catch (IOException e) {
                         System.err.println("Error: " + e.getMessage());
@@ -50,6 +51,9 @@ public class mainMenu {
                         boolean isAuthenticated = manager.loginUser(username_, pass_);
                         if (isAuthenticated) {
                             System.out.println("Login successful! Welcome, " + username_ + "!");
+                            InvestmentManagement.investMentManagement();
+
+                            break;
                         } else {
                             System.out.println("Invalid username or password.");
                         }
@@ -70,6 +74,7 @@ public class mainMenu {
             }
 
         }
+
 
     }
 
