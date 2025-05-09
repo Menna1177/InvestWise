@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class Asset {
     private String name;
@@ -39,6 +40,23 @@ public class Asset {
             this.annualGrowthRate = calculateAnnualGrowthRate();
         }
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Asset asset = (Asset) obj;
+        return name.equals(asset.name) && type == asset.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type);
+    }
+
 
     // Calculates annualized return percentage
     public double calculateAnnualGrowthRate() {

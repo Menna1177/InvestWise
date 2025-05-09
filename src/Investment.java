@@ -12,9 +12,11 @@ public class Investment {
     private Investment_Metrics metrics;
     private LocalDate lastUpdated;
 
+
     public Investment() {
         this.metrics = new Investment_Metrics(0);
         this.lastUpdated = LocalDate.now();
+        goalTracker = new Goal_Manager();
     }
 
     // Returns assets grouped by risk category
@@ -57,6 +59,7 @@ public class Investment {
         notifyTracker();
     }
 
+
     // Lists all assets with details
     public void listAssets() {
         System.out.println("Current Investment Portfolio:");
@@ -74,17 +77,45 @@ public class Investment {
 
     public void editAsset(Asset oldAsset, Asset newAsset) {
         if (!investmentAssets.contains(oldAsset)) {
-            throw new IllegalArgumentException("Asset not found in portfolio");
+            System.out.println("Asset not found in portfolio.");
+            System.out.println("Portfolio contains: " + investmentAssets);  // Debug: عرض الأصول الموجودة
+            return;
         }
 
         int index = investmentAssets.indexOf(oldAsset);
+        System.out.println("Asset found at index: " + index+1);
+
+        if (oldAsset.equals(newAsset)) {
+            System.out.println("The new asset is identical to the old one.");
+            return;
+        }
+
+
+        System.out.println("Current portfolio value before update: " + currentValue);
         currentValue -= oldAsset.getValue();
-        investmentAssets.set(index, newAsset);
+        System.out.println("Portfolio value after subtracting old asset: " + currentValue);
         currentValue += newAsset.getValue();
+        System.out.println("Portfolio value after adding new asset: " + currentValue);
+
+
+        investmentAssets.set(index, newAsset);
+        System.out.println("Asset updated at index " + index);
+
+
         metrics.updateMetrics(newAsset.getType(), newAsset.getValue() - oldAsset.getValue(), LocalDate.now());
+        System.out.println("Metrics updated");
+
+
         lastUpdated = LocalDate.now();
+        System.out.println("Last updated on: " + lastUpdated);
+
+
         notifyTracker();
+        System.out.println("Tracker notified.");
+
+        System.out.println("Asset updated successfully.");
     }
+
 
     public void removeAsset(Asset asset) {
         if (!investmentAssets.remove(asset)) {
@@ -99,8 +130,11 @@ public class Investment {
     public void setGoalTracker(Goal_Manager goalTracker) {
         this.goalTracker = goalTracker;
     }
+    public Goal_Manager getGoalTracker() {
+        return this.goalTracker;
+    }
 
-    // Notifies goal tracker about value changes
+
     public void notifyTracker() {
         if (goalTracker != null) {
             goalTracker.trackProgress();
@@ -119,18 +153,5 @@ public class Investment {
         return metrics.getValuationTrends();
     }
 
-    // Additional helper methods
-    public LocalDate getLastUpdated() {
-        return lastUpdated;
-    }
 
-    public int getAssetCount() {
-        return investmentAssets.size();
-    }
-
-    public List<Asset> getAssetsByType(Asset_Type type) {
-        return investmentAssets.stream()
-                .filter(a -> a.getType() == type)
-                .collect(Collectors.toList());
-    }
 }

@@ -21,7 +21,6 @@ public class Goal {
         return currrentProgress >= amount;
     }
 
-    // Additional useful methods could be:
 
     // Returns how much is left to reach the goal
     double getRemainingAmount() {
