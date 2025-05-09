@@ -72,6 +72,7 @@ public class mainMenu {
         }
 
     }
+     InvestmentManagement.investMentManagement();
 
 
 }
