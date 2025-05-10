@@ -1,42 +1,35 @@
-import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Investment implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Investment {
     private List<Asset> investmentAssets = new ArrayList<>();
     private double currentValue;
     private Goal_Manager goalTracker;
     private Investment_Metrics metrics;
     private LocalDate lastUpdated;
-    private static String username;
-    public Investment(String username) {
-        this.username = username;
+
+
+    public Investment() {
         this.metrics = new Investment_Metrics(0);
         this.lastUpdated = LocalDate.now();
-        this.goalTracker = new Goal_Manager();
+        goalTracker = new Goal_Manager();
     }
 
+    // Returns assets grouped by risk category
     public Map<Risk_Cat, List<Asset>> getAssetRisk() {
         return investmentAssets.stream()
                 .collect(Collectors.groupingBy(Asset::getRiskCategory));
-    }
-
-    void setUserName(String username) {
-        this.username = username;
-    }
-  public static String getUsername() {
-        return username;
     }
 
     public double getCurrentValue() {
         return currentValue;
     }
 
+    // Displays all asset types with their counts
     public void displayAssetTypes() {
         Map<Asset_Type, Long> typeCounts = investmentAssets.stream()
                 .collect(Collectors.groupingBy(Asset::getType, Collectors.counting()));
@@ -48,9 +41,12 @@ public class Investment implements Serializable {
 
     public double calculateRiskScore() {
         if (investmentAssets.isEmpty()) return 0.0;
+
         double totalRisk = investmentAssets.stream()
                 .mapToDouble(a -> a.getValue() * a.getRiskCategory().getScore())
                 .sum();
+
+        // Normalize by dividing by maximum possible score (4)
         return (totalRisk / currentValue) / 4.0;
     }
 
@@ -61,17 +57,10 @@ public class Investment implements Serializable {
         metrics.updateMetrics(asset.getType(), asset.getValue(), LocalDate.now());
         lastUpdated = LocalDate.now();
         notifyTracker();
-        saveToFile();
     }
 
-    public static void Add(Investment portfolio) {
-        System.out.println("\nAdding a new Asset:");
-        Asset newAsset = InvestmentManagement.createAsset("new");
-        portfolio.addAsset(newAsset);
-        portfolio.saveToFile();
-        System.out.println("Asset added successfully!");
-    }
 
+    // Lists all assets with details
     public void listAssets() {
         System.out.println("Current Investment Portfolio:");
         System.out.printf("%-20s %-15s %-10s %-15s %-10s%n",
@@ -84,52 +73,64 @@ public class Investment implements Serializable {
                         asset.getValue(),
                         asset.getRiskCategory(),
                         asset.getRoi()));
-        saveToFile();
     }
 
     public void editAsset(Asset oldAsset, Asset newAsset) {
         if (!investmentAssets.contains(oldAsset)) {
             System.out.println("Asset not found in portfolio.");
+            System.out.println("Portfolio contains: " + investmentAssets);  // Debug: عرض الأصول الموجودة
             return;
         }
+
         int index = investmentAssets.indexOf(oldAsset);
+        System.out.println("Asset found at index: " + index+1);
+
         if (oldAsset.equals(newAsset)) {
             System.out.println("The new asset is identical to the old one.");
             return;
         }
 
+
+        System.out.println("Current portfolio value before update: " + currentValue);
         currentValue -= oldAsset.getValue();
+        System.out.println("Portfolio value after subtracting old asset: " + currentValue);
         currentValue += newAsset.getValue();
+        System.out.println("Portfolio value after adding new asset: " + currentValue);
+
+
         investmentAssets.set(index, newAsset);
+        System.out.println("Asset updated at index " + index);
+
+
         metrics.updateMetrics(newAsset.getType(), newAsset.getValue() - oldAsset.getValue(), LocalDate.now());
+        System.out.println("Metrics updated");
+
+
         lastUpdated = LocalDate.now();
+        System.out.println("Last updated on: " + lastUpdated);
+
+
         notifyTracker();
+        System.out.println("Tracker notified.");
+
         System.out.println("Asset updated successfully.");
-        saveToFile();
     }
 
 
     public void removeAsset(Asset asset) {
-        if (!investmentAssets.contains(asset.getName())) {
+        if (!investmentAssets.remove(asset)) {
             System.out.println("Asset not found in portfolio");
             return;
         }
-
-        investmentAssets.remove(asset);
         currentValue -= asset.getValue();
         metrics.updateMetrics(asset.getType(), -asset.getValue(), LocalDate.now());
         lastUpdated = LocalDate.now();
         notifyTracker();
-        saveToFile();
-
-        System.out.println("Asset removed successfully!");
     }
-
 
     public void setGoalTracker(Goal_Manager goalTracker) {
         this.goalTracker = goalTracker;
     }
-
     public Goal_Manager getGoalTracker() {
         return this.goalTracker;
     }
@@ -153,26 +154,5 @@ public class Investment implements Serializable {
         return metrics.getValuationTrends();
     }
 
-    public void saveToFile() {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(username + "_investment.ser"))) {
-            out.writeObject(this);
-            System.out.println("Investment data saved for user: " + username);
-        } catch (IOException e) {
-            System.out.println("Error saving investment data: " + e.getMessage());
-        }
-    }
 
-    public static Investment loadFromFile(String username) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(username + "_investment.ser"))) {
-            Investment investment = (Investment) in.readObject();
-            if (investment.username == null) {
-                investment.setUserName(username);
-            }
-            return investment;
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error loading investment data: " + e.getMessage());
-            Investment newInvestment = new Investment(username);
-            return newInvestment;
-        }
-    }
 }
