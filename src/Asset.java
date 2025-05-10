@@ -104,7 +104,7 @@ public class Asset {
     }
 
     public boolean isHalal() {
-        return halal;
+        return type != Asset_Type.Bond;
     }
 
     public double getAnnualGrowthRate() {
@@ -114,7 +114,7 @@ public class Asset {
     public boolean isLiquid() {
         if (type == null) return false;
         return type == Asset_Type.Stocks ||
-                type == Asset_Type.Bond ||
+                type == Asset_Type.Gold ||
                 type == Asset_Type.Cash ||
                 type == Asset_Type.RealState;
     }
