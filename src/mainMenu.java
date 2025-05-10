@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 
@@ -35,7 +36,7 @@ public class mainMenu {
                         manager.registerUser(name, email, username, pass);
                         System.out.println("Registration successful!");
                         Investment investment = new Investment(username);
-                        Investment portfolio = Investment.loadFromFile(username);
+                        List<Asset> portfolio = Investment.loadFromFile(username).getInvestmentAssets();
                         Investment.setUserName(username);
                         InvestmentManagement.investMentManagement();
                         break;
@@ -57,7 +58,6 @@ public class mainMenu {
                         if (isAuthenticated) {
                             System.out.println("Login successful! Welcome, " + username_ + "!");
                             Investment investment = new Investment(username_);
-                            Investment portfolio = Investment.loadFromFile(username_);
                             InvestmentManagement.investMentManagement();
 
                             break;
