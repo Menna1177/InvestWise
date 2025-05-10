@@ -25,7 +25,8 @@ public class InvestmentManagement {
             System.out.println("8. Remove Goal");
             System.out.println("9. Show Goal Details");
             System.out.println("10. calculate zakat");
-            System.out.println("11. Exit");
+            System.out.println("11. Connect Bank Account");
+            System.out.println("12. Exit");
 
             String choice = scanner.nextLine();
 
@@ -61,8 +62,13 @@ public class InvestmentManagement {
 
                 case "10":
                     ALZakat(portfolio);
+                    break;
                 case "11":
+                    connectBank();
+                    break;
+                case "12":
                     System.out.println("Exiting program...");
+                    scanner.close();
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -285,9 +291,21 @@ public class InvestmentManagement {
             return;
         }
         System.out.println("Enter zakat rate (e.g., 0.025 for 2.5%): ");
-        double rate = scanner.nextDouble();
+        double rate = Double.parseDouble(scanner.nextLine());
         Zakat_Calc zakatCalc = new Zakat_Calc(rate);
         zakatCalc.calculateZakat(portfolio);
 
+    }
+    public static void connectBank(){
+        Bank_Connector bank = new Bank_Connector();
+        System.out.println("Enter bank name");
+        String bankName = scanner.nextLine();
+        bank.selectBank(bankName);
+        System.out.println("Enter your credit card number");
+        String CardNo = scanner.nextLine();
+        System.out.println("Enter card expiry (mm/yyyy)");
+        String Expiry = scanner.nextLine();
+        bank.inputAccountDetails(CardNo ,Expiry);
+        bank.isConnected();
     }
 }
