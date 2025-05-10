@@ -170,7 +170,6 @@ public class InvestmentManagement {
         System.out.println("\nRemoving an Asset:");
         Asset assetToRemove = createAsset("remove");
         investment.removeAsset(assetToRemove);
-        System.out.println("Asset removed successfully!");
     }
 
     // Show investment Details
