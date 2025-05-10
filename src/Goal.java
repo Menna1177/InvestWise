@@ -1,6 +1,8 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Goal {
+public class Goal implements Serializable {
+    private static final long serialVersionUID = 1L;
     String type;
     double amount;
     LocalDate deadline;

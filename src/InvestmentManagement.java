@@ -1,16 +1,18 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
+
 
 public class InvestmentManagement {
     static Scanner scanner = new Scanner(System.in);
     static Goal_Manager goalManager = new Goal_Manager();  // Instantiate the Goal Manager
 
     public static void investMentManagement() {
-        Investment portfolio = new Investment();
+        Investment portfolio = new Investment(Investment.getUsername());
 
         while (true) {
             System.out.println("\nSelect an option:");
@@ -29,7 +31,7 @@ public class InvestmentManagement {
 
             switch (choice) {
                 case "1":
-                    addAsset(portfolio);
+                    ADD(portfolio);
                     break;
                 case "2":
                     editAsset(portfolio);
@@ -136,7 +138,7 @@ public class InvestmentManagement {
     }
 
     // Add Asset to Portfolio
-    public static void addAsset(Investment portfolio) {
+    public static void ADD(Investment portfolio) {
         System.out.println("\nAdding a new Asset:");
         Asset newAsset = createAsset("new");
         portfolio.addAsset(newAsset);
@@ -157,11 +159,16 @@ public class InvestmentManagement {
         System.out.println("\nRemoving an Asset:");
         Asset assetToRemove = createAsset("remove");
         portfolio.removeAsset(assetToRemove);
-        System.out.println("Asset removed successfully!");
     }
 
     // Show Portfolio Details
     public static void showPortfolio(Investment portfolio) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(Investment.getUsername()+"_investment.ser"))) {
+            portfolio = (Investment) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading investment data: " + e.getMessage());
+            return;
+        }
         System.out.println("\nPortfolio Details:");
         portfolio.listAssets();
         System.out.printf("\nTotal Portfolio Value: $%.2f%n", portfolio.getCurrentValue());

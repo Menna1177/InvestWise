@@ -2,7 +2,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-public class Asset {
+import java.io.Serializable;
+
+public class Asset implements Serializable {
     private String name;
     private double currentValue;
     private Asset_Type type;

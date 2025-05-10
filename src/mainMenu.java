@@ -5,6 +5,7 @@ public class mainMenu {
     private static final UserManager manager = new UserManager();
     private static final Scanner in = new Scanner(System.in);
 
+
     public mainMenu(){
         boolean run = true;
         while(run){
@@ -33,6 +34,9 @@ public class mainMenu {
                     try {
                         manager.registerUser(name, email, username, pass);
                         System.out.println("Registration successful!");
+                        Investment investment = new Investment(username);
+                        Investment portfolio = Investment.loadFromFile(username);
+                        portfolio.setUserName(username);
                         InvestmentManagement.investMentManagement();
                         break;
 
@@ -52,6 +56,8 @@ public class mainMenu {
                         boolean isAuthenticated = manager.loginUser(username_, pass_);
                         if (isAuthenticated) {
                             System.out.println("Login successful! Welcome, " + username_ + "!");
+                            Investment investment = new Investment(username_);
+                            Investment portfolio = Investment.loadFromFile(username_);
                             InvestmentManagement.investMentManagement();
 
                             break;
