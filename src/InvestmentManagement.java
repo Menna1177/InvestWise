@@ -1,3 +1,6 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -172,6 +175,12 @@ public class InvestmentManagement {
 
     // Show investment Details
     public static void showPortfolio(Investment investment) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(Investment.getUserName() + "_investment.ser"))) {
+            investment = (Investment) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading investment data: " + e.getMessage());
+            return;
+        }
         System.out.println("\nInvestment Details:");
         investment.listAssets();
         System.out.printf("\nTotal Investment Value: $%.2f%n", investment.getCurrentValue());

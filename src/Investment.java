@@ -142,15 +142,20 @@ public class Investment implements Serializable {
 
 
     public void removeAsset(Asset asset) {
-        if (!investmentAssets.remove(asset)) {
+
+        if (!investmentAssets.contains(asset)) {
             System.out.println("Asset not found in portfolio");
             return;
         }
+        investmentAssets.remove(asset);
+
         currentValue -= asset.getValue();
         metrics.updateMetrics(asset.getType(), -asset.getValue(), LocalDate.now());
         lastUpdated = LocalDate.now();
         notifyTracker();
         saveToFile(userName);
+
+        System.out.println("Asset removed successfully!");
     }
 
     public void setGoalTracker(Goal_Manager goalTracker) {
