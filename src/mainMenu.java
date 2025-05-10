@@ -36,7 +36,6 @@ public class mainMenu {
                         manager.registerUser(name, email, username, pass);
                         System.out.println("Registration successful!");
                         Investment investment = new Investment(username);
-                        List<Asset> portfolio = Investment.loadFromFile(username).getInvestmentAssets();
                         Investment.setUserName(username);
                         InvestmentManagement.investMentManagement();
                         break;

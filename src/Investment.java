@@ -17,7 +17,6 @@ public class Investment implements Serializable {
         this.metrics = new Investment_Metrics(0);
         this.lastUpdated = LocalDate.now();
         this.goalTracker = new Goal_Manager();
-        this.investmentAssets = loadFromFile(userName).getInvestmentAssets();
         this.currentValue = investmentAssets.stream().mapToDouble(Asset::getValue).sum();
     }
 
