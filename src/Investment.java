@@ -178,7 +178,7 @@ public class Investment implements Serializable {
         return metrics.getValuationTrends();
     }
     public void saveToFile(String username) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(username + "_investment.dat"))) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(username + "_investment.ser"))) {
             out.writeObject(this);
             System.out.println("Investment data saved for user: " + username);
         } catch (IOException e) {
@@ -187,7 +187,7 @@ public class Investment implements Serializable {
     }
 
     public static Investment loadFromFile(String username) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(username + "_investment.dat"))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(username + "_investment.ser"))) {
             return (Investment) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading investment data: " + e.getMessage());
