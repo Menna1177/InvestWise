@@ -18,6 +18,9 @@ public class Investment {
         this.lastUpdated = LocalDate.now();
         goalTracker = new Goal_Manager();
     }
+    public List<Asset> getInvestmentAssets() {
+        return new ArrayList<>(investmentAssets);
+    }
 
     // Returns assets grouped by risk category
     public Map<Risk_Cat, List<Asset>> getAssetRisk() {
