@@ -8,7 +8,7 @@ public class InvestmentManagement {
     static Goal_Manager goalManager = new Goal_Manager();  // Instantiate the Goal Manager
 
     public static void investMentManagement() {
-        Investment investment = new Investment();
+        Investment investment = new Investment(Investment.getUserName());
         Portfolio portfolio = new Portfolio();
 
         while (true) {

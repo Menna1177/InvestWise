@@ -1,3 +1,4 @@
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -5,15 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Investment {
+public class Investment implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Asset> investmentAssets = new ArrayList<>();
     private double currentValue;
     private Goal_Manager goalTracker;
     private Investment_Metrics metrics;
     private LocalDate lastUpdated;
+    static private String userName;
 
 
-    public Investment() {
+    public Investment(String userName) {
+        this.userName = userName;
         this.metrics = new Investment_Metrics(0);
         this.lastUpdated = LocalDate.now();
         goalTracker = new Goal_Manager();
@@ -25,6 +29,12 @@ public class Investment {
                 .collect(Collectors.groupingBy(Asset::getRiskCategory));
     }
 
+   static public String getUserName(){
+        return userName;
+    }
+    static public void setUserName(String userName){
+        Investment.userName = userName;
+    }
     public double getCurrentValue() {
         return currentValue;
     }
@@ -58,6 +68,13 @@ public class Investment {
         lastUpdated = LocalDate.now();
         notifyTracker();
     }
+    public static void AddAsset(Investment portfolio) {
+        System.out.println("\nAdding a new Asset:");
+        Asset newAsset = InvestmentManagement.createAsset("new");
+        portfolio.addAsset(newAsset);
+        portfolio.saveToFile(userName);
+        System.out.println("Asset added successfully!");
+    }
 
 
     // Lists all assets with details
@@ -78,7 +95,8 @@ public class Investment {
     public void editAsset(Asset oldAsset, Asset newAsset) {
         if (!investmentAssets.contains(oldAsset)) {
             System.out.println("Asset not found in portfolio.");
-            System.out.println("Portfolio contains: " + investmentAssets);  // Debug: عرض الأصول الموجودة
+            System.out.println("Portfolio contains: " + investmentAssets);
+
             return;
         }
 
@@ -112,6 +130,7 @@ public class Investment {
 
         notifyTracker();
         System.out.println("Tracker notified.");
+        saveToFile(userName);
 
         System.out.println("Asset updated successfully.");
     }
@@ -126,6 +145,7 @@ public class Investment {
         metrics.updateMetrics(asset.getType(), -asset.getValue(), LocalDate.now());
         lastUpdated = LocalDate.now();
         notifyTracker();
+        saveToFile(userName);
     }
 
     public void setGoalTracker(Goal_Manager goalTracker) {
@@ -152,6 +172,23 @@ public class Investment {
 
     public Map<LocalDate, Double> recordValuationTrends() {
         return metrics.getValuationTrends();
+    }
+    public void saveToFile(String username) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(username + "_investment.dat"))) {
+            out.writeObject(this);
+            System.out.println("Investment data saved for user: " + username);
+        } catch (IOException e) {
+            System.out.println("Error saving investment data: " + e.getMessage());
+        }
+    }
+
+    public static Investment loadFromFile(String username) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(username + "_investment.dat"))) {
+            return (Investment) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading investment data: " + e.getMessage());
+            return new Investment(username); // Return empty investment if not found
+        }
     }
 
 
