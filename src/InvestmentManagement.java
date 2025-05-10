@@ -1,7 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,7 +10,8 @@ public class InvestmentManagement {
     static Goal_Manager goalManager = new Goal_Manager();  // Instantiate the Goal Manager
 
     public static void investMentManagement() {
-        Investment portfolio = new Investment();
+        Investment investment = new Investment();
+        Portfolio portfolio = new Portfolio();
 
         while (true) {
             System.out.println("\nSelect an option:");
@@ -23,22 +24,24 @@ public class InvestmentManagement {
             System.out.println("7. Track Progress of Goals");
             System.out.println("8. Remove Goal");
             System.out.println("9. Show Goal Details");
-            System.out.println("10. Exit");
+            System.out.println("10. calculate zakat");
+            System.out.println("11. Exit");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
-                    addAsset(portfolio);
+                    addAsset(investment);
+                    portfolio.setMyInvestment(investment);
                     break;
                 case "2":
-                    editAsset(portfolio);
+                    editAsset(investment);
                     break;
                 case "3":
-                    removeAsset(portfolio);
+                    removeAsset(investment);
                     break;
                 case "4":
-                    showPortfolio(portfolio);
+                    showPortfolio(investment);
                     break;
                 case "5":
                     addGoal();
@@ -55,7 +58,10 @@ public class InvestmentManagement {
                 case "9":
                     showGoalDetails();
                     break;
+
                 case "10":
+                    ALZakat(portfolio);
+                case "11":
                     System.out.println("Exiting program...");
                     return;
                 default:
@@ -135,41 +141,41 @@ public class InvestmentManagement {
         }
     }
 
-    // Add Asset to Portfolio
-    public static void addAsset(Investment portfolio) {
+    // Add Asset to investment
+    public static void addAsset(Investment investment) {
         System.out.println("\nAdding a new Asset:");
         Asset newAsset = createAsset("new");
-        portfolio.addAsset(newAsset);
+        investment.addAsset(newAsset);
         System.out.println("Asset added successfully!");
     }
 
 
-    // Edit Asset in Portfolio
-    public static void editAsset(Investment portfolio) {
+    // Edit Asset in investment
+    public static void editAsset(Investment investment) {
         System.out.println("\nEditing an Asset:");
         Asset oldAsset = createAsset("old");
         Asset newAsset = createAsset("new");
-        portfolio.editAsset(oldAsset, newAsset);
+        investment.editAsset(oldAsset, newAsset);
     }
 
-    // Remove Asset from Portfolio
-    public static void removeAsset(Investment portfolio) {
+    // Remove Asset from investment
+    public static void removeAsset(Investment investment) {
         System.out.println("\nRemoving an Asset:");
         Asset assetToRemove = createAsset("remove");
-        portfolio.removeAsset(assetToRemove);
+        investment.removeAsset(assetToRemove);
         System.out.println("Asset removed successfully!");
     }
 
-    // Show Portfolio Details
-    public static void showPortfolio(Investment portfolio) {
-        System.out.println("\nPortfolio Details:");
-        portfolio.listAssets();
-        System.out.printf("\nTotal Portfolio Value: $%.2f%n", portfolio.getCurrentValue());
-        System.out.printf("Portfolio Risk Score: %.2f%n", portfolio.calculateRiskScore());
-        System.out.printf("ROI: %.2f%%%n", portfolio.recordROI());
-        portfolio.displayAssetTypes();
+    // Show investment Details
+    public static void showPortfolio(Investment investment) {
+        System.out.println("\nInvestment Details:");
+        investment.listAssets();
+        System.out.printf("\nTotal Investment Value: $%.2f%n", investment.getCurrentValue());
+        System.out.printf("Investment Risk Score: %.2f%n", investment.calculateRiskScore());
+        System.out.printf("ROI: %.2f%%%n", investment.recordROI());
+        investment.displayAssetTypes();
         System.out.println("\nAsset Distribution:");
-        portfolio.recordAssetDistribution().forEach((type, percent) -> {
+        investment.recordAssetDistribution().forEach((type, percent) -> {
             System.out.printf("- %s: %.2f%%%n", type, percent);
         });
     }
@@ -271,5 +277,17 @@ public class InvestmentManagement {
                 System.out.println(" Invalid date. Please use format yyyy-mm-dd.");
             }
         }
+    }
+
+    public static void ALZakat(Portfolio portfolio){
+        if (portfolio == null || portfolio.getLiquidAssets().isEmpty()) {
+            System.out.println("No investments available for Zakat calculation!");
+            return;
+        }
+        System.out.println("Enter zakat rate (e.g., 0.025 for 2.5%): ");
+        double rate = scanner.nextDouble();
+        Zakat_Calc zakatCalc = new Zakat_Calc(rate);
+        zakatCalc.calculateZakat(portfolio);
+
     }
 }
