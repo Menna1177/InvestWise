@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class InvestmentManagement {
     static Scanner scanner = new Scanner(System.in);
-    static Goal_Manager goalManager = new Goal_Manager();  // Instantiate the Goal Manager
+    static Goal_Manager goalManager = new Goal_Manager();
 
     public static void investMentManagement() {
         Investment investment = new Investment(Investment.getUserName());

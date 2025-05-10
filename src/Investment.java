@@ -38,6 +38,10 @@ public class Investment implements Serializable {
     public double getCurrentValue() {
         return currentValue;
     }
+    public List<Asset> getInvestmentAssets() {
+        return new ArrayList<>(investmentAssets) ;
+    }
+
 
     // Displays all asset types with their counts
     public void displayAssetTypes() {
