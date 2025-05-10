@@ -94,6 +94,7 @@ public class Investment implements Serializable {
                         asset.getValue(),
                         asset.getRiskCategory(),
                         asset.getRoi()));
+        loadFromFile(userName);
     }
 
     public void editAsset(Asset oldAsset, Asset newAsset) {
