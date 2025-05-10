@@ -65,7 +65,6 @@ public class Bank_Connector {
             }
          }
       }
-      scanner.close();
       if (flag) return true;
       else return false;
    }
