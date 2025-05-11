@@ -69,7 +69,6 @@ public class InvestmentManagement {
                     break;
                 case "12":
                     System.out.println("Exiting program...");
-                    scanner.close();
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
