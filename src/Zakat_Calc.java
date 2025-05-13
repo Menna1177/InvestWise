@@ -14,6 +14,11 @@ public class Zakat_Calc {
         this.zakat_rate = zakat;
     }
 
+    /**
+     * calculateZakat method.
+     * @param portfolio the portfolio
+     * @return result of the operation
+     */
     public double calculateZakat(Portfolio portfolio){
         List<Asset> liquidInvestment = new ArrayList<>();
         liquidInvestment = portfolio.getLiquidAssets();
@@ -25,7 +30,7 @@ public class Zakat_Calc {
                 System.out.printf("%-5s %-17s %-16s %-10s%n", "" ,asset.getName() , asset.getValue() , zakat);
             }
             else{
-                System.out.printf("%-5s %-15s %-15s %-10s%n", asset.getName() , "not applicable");
+                System.out.printf("%-5s %-15s %-15s %-10s%n", "",asset.getName() ,asset.getValue(), "not applicable");
             }
 
         }
@@ -33,10 +38,20 @@ public class Zakat_Calc {
         return 0;
     }
 
+    /**
+     * isZakatApplicable method.
+     * @param asset the asset
+     * @return result of the operation
+     */
     public boolean isZakatApplicable (Asset asset){
         return asset.getValue() >= NISAB && asset.getHoldingYears() >= 1 && asset.isHalal() ;
     }
 
+    /**
+     * generateZakatReport method.
+     * @param portfolio the portfolio
+     * @param filename the filename
+     */
     public void generateZakatReport(Portfolio portfolio , String filename){
         Document document = new Document();
         try {
@@ -85,6 +100,12 @@ public class Zakat_Calc {
             System.out.println("Failed to generate PDF: " + e.getMessage());
         }
     }
+    /**
+     * createStyledCell method.
+     * @param text the text
+     * @param font the font
+     * @return result of the operation
+     */
     public PdfPCell createStyledCell(String text, Font font) {
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
         cell.setPadding(15);             // حشوة داخلية
