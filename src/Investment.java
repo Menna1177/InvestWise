@@ -12,6 +12,10 @@ public class Investment implements Serializable {
     private LocalDate lastUpdated;
     static private String userName;
 
+    /**
+     *
+     * @param userName
+     */
     public Investment(String userName) {
         Investment.userName = userName;
         this.metrics = new Investment_Metrics(0);
@@ -20,23 +24,43 @@ public class Investment implements Serializable {
         this.currentValue = investmentAssets.stream().mapToDouble(Asset::getValue).sum();
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Risk_Cat, List<Asset>> getAssetRisk() {
         return investmentAssets.stream()
                 .collect(Collectors.groupingBy(Asset::getRiskCategory));
     }
 
+    /**
+     *
+     * @return
+     */
     public static String getUserName() {
         return userName;
     }
 
+    /**
+     *
+     * @param userName
+     */
     public static void setUserName(String userName) {
         Investment.userName = userName;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getCurrentValue() {
         return currentValue;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Asset> getInvestmentAssets() {
         return new ArrayList<>(investmentAssets);
     }
@@ -50,6 +74,10 @@ public class Investment implements Serializable {
                 System.out.printf("- %s: %d assets%n", type, count));
     }
 
+    /**
+     *
+     * @return
+     */
     public double calculateRiskScore() {
         if (investmentAssets.isEmpty()) return 0.0;
 
@@ -60,6 +88,10 @@ public class Investment implements Serializable {
         return (totalRisk / currentValue) / 4.0;
     }
 
+    /**
+     *
+     * @param asset
+     */
     public void addAsset(Asset asset) {
         if (asset == null) throw new IllegalArgumentException("Asset cannot be null");
         investmentAssets.add(asset);
@@ -70,6 +102,10 @@ public class Investment implements Serializable {
         saveToFile(userName);
     }
 
+    /**
+     *
+     * @param portfolio
+     */
     public static void AddAsset(Investment portfolio) {
         System.out.println("\nAdding a new Asset:");
         Asset newAsset = InvestmentManagement.createAsset("new");
@@ -97,6 +133,11 @@ public class Investment implements Serializable {
                 asset.getRoi()));
     }
 
+    /**
+     *
+     * @param oldAsset
+     * @param newAsset
+     */
     public void editAsset(Asset oldAsset, Asset newAsset) {
         if (!investmentAssets.contains(oldAsset)) {
             System.out.println("Asset not found in portfolio.");
@@ -120,6 +161,10 @@ public class Investment implements Serializable {
         System.out.println("Asset updated successfully.");
     }
 
+    /**
+     *
+     * @param asset
+     */
     public void removeAsset(Asset asset) {
         if (!investmentAssets.contains(asset)) {
             System.out.println("Asset not found in portfolio");
@@ -135,10 +180,18 @@ public class Investment implements Serializable {
         System.out.println("Asset removed successfully!");
     }
 
+    /**
+     *
+     * @param goalTracker
+     */
     public void setGoalTracker(Goal_Manager goalTracker) {
         this.goalTracker = goalTracker;
     }
 
+    /**
+     *
+     * @return
+     */
     public Goal_Manager getGoalTracker() {
         return this.goalTracker;
     }
@@ -149,18 +202,35 @@ public class Investment implements Serializable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public double recordROI() {
         return metrics.calculateROI();
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Asset_Type, Double> recordAssetDistribution() {
         return metrics.getAssetDistribution();
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<LocalDate, Double> recordValuationTrends() {
         return metrics.getValuationTrends();
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static Investment loadFromFile(String username) {
         File file = new File(username + "_investment.ser");
@@ -179,6 +249,10 @@ public class Investment implements Serializable {
     }
 
 
+    /**
+     *
+     * @param username
+     */
     public void saveToFile(String username) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(username + "_investment.ser"))) {
             out.writeObject(this);
