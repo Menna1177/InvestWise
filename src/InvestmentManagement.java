@@ -25,7 +25,7 @@ public class InvestmentManagement {
             System.out.println("7. Track Progress of Goals");
             System.out.println("8. Remove Goal");
             System.out.println("9. Show Goal Details");
-            System.out.println("10. calculate zakat");
+            System.out.println("10. Calculate Zakat");
             System.out.println("11. Connect Bank Account");
             System.out.println("12. Exit");
 
@@ -299,8 +299,23 @@ public class InvestmentManagement {
         double rate = Double.parseDouble(scanner.nextLine());
         Zakat_Calc zakatCalc = new Zakat_Calc(rate);
         zakatCalc.calculateZakat(portfolio);
+        while (true){
+            System.out.println("Do you want to download PDF with zakat details \n(1- Yes, 2- No)");
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice == 1){
+                System.out.println("Enter file name ");
+                String filename = scanner.nextLine();
+                zakatCalc.generateZakatReport(portfolio , filename);
+                break;
+            } else if (choice == 2) {
+                return;
+            }
+            else {
+                System.out.println("Invalid choice. Enter 1 or 2.");
+                continue;
+            }
+        }
 
-    }
     public static void connectBank(){
         Bank_Connector bank = new Bank_Connector();
         System.out.println("Enter bank name");
