@@ -13,6 +13,10 @@ public class Goal_Manager implements Serializable {
         this.goals = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param goal
+     */
     public void addGoal(Goal goal) {
         if (goal == null) throw new IllegalArgumentException("Goal cannot be null");
         goals.add(goal);
@@ -54,22 +58,43 @@ public class Goal_Manager implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param index
+     * @return
+     */
     public Goal getGoal(int index) {
         return goals.get(index);
     }
 
+    /**
+     *
+     * @param index
+     */
     public void removeGoal(int index) {
         goals.remove(index);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getGoalCount() {
         return goals.size();
     }
 
+    /**
+     *
+     * @param investment
+     */
     public void setTrackedInvestment(Investment investment) {
         this.tracked = investment;
     }
 
+    /**
+     *
+     * @return
+     */
     public Investment getTrackedInvestment() {
         return tracked;
     }
