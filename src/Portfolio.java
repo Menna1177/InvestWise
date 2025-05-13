@@ -10,31 +10,54 @@ public class Portfolio {
         this.MyGoals = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param investment
+     */
     public void setMyInvestment(Investment investment) {
         if (investment != null) {
             MyInvestment.add(investment);
         }
     }
 
+    /**
+     *
+     * @param goal
+     */
     public void setMyGoals(Goal goal){
         if (goal != null){
             MyGoals.add(goal);
         }
     }
 
+    /**
+     *
+     * @param zakat
+     */
     public void setMyZakat(Zakat_Calc zakat){
         this.MyZakat = zakat;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public double calcTotalRisk(){
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public double calcTotalValue(){
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Asset> getLiquidAssets(){
         Set<Asset> uniqueAssets = new HashSet<>();
         for(Investment inv : MyInvestment){
