@@ -7,10 +7,19 @@ public class Bank_Connector {
    private String encExpiry;
    private boolean is_connected;
 
+   /**
+    *
+    * @param bankName
+    */
    public void selectBank(String bankName){
         bank_name = bankName;
    }
 
+   /**
+    *
+    * @param CardNo
+    * @param Expiry
+    */
    public void inputAccountDetails(String CardNo ,String Expiry){
         encCardNo = CardNo;
         encExpiry = Expiry;
@@ -33,6 +42,10 @@ public class Bank_Connector {
 
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isConnected(){
       SecureRandom secureRandom = new SecureRandom();
       int OTP = secureRandom.nextInt(100000);
