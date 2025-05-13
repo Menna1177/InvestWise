@@ -147,6 +147,10 @@ public class InvestmentManagement {
         }
     }
 
+    /**
+     *
+     * @param investment
+     */
     // Add Asset to investment
     public static void addAsset(Investment investment) {
         System.out.println("\nAdding a new Asset:");
@@ -155,7 +159,10 @@ public class InvestmentManagement {
         System.out.println("Asset added successfully!");
     }
 
-
+    /**
+     *
+     * @param investment
+     */
     // Edit Asset in investment
     public static void editAsset(Investment investment) {
         System.out.println("\nEditing an Asset:");
@@ -164,6 +171,10 @@ public class InvestmentManagement {
         investment.editAsset(oldAsset, newAsset);
     }
 
+    /**
+     *
+     * @param investment
+     */
     // Remove Asset from investment
     public static void removeAsset(Investment investment) {
         System.out.println("\nRemoving an Asset:");
@@ -171,6 +182,10 @@ public class InvestmentManagement {
         investment.removeAsset(assetToRemove);
     }
 
+    /**
+     *
+     * @param investment
+     */
     // Show investment Details
     public static void showPortfolio(Investment investment) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(Investment.getUserName() + "_investment.ser"))) {
@@ -191,6 +206,11 @@ public class InvestmentManagement {
         });
     }
 
+    /**
+     *
+     * @param assetType
+     * @return
+     */
     // Helper Method to Create Asset
     static Asset createAsset(String assetType) {
         System.out.println("Enter details for the " + assetType + " asset:");
@@ -205,12 +225,22 @@ public class InvestmentManagement {
         return new Asset(name, currentValue, type, isActive, purchaseDate, purchasePrice, risk);
     }
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     // Helper Method to Prompt User for Strings
     static String prompt(String label) {
         System.out.print(label + ": ");
         return scanner.nextLine();
     }
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     // Helper Method to Prompt User for Doubles
     static double promptDouble(String label) {
         while (true) {
@@ -223,6 +253,11 @@ public class InvestmentManagement {
         }
     }
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     // Helper Method to Select Boolean Values
     static boolean selectBoolean(String label) {
         while (true) {
@@ -234,6 +269,10 @@ public class InvestmentManagement {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     // Helper Method to Select Asset Type
     static Asset_Type selectAssetType() {
         System.out.println("Select Asset Type:");
@@ -256,6 +295,10 @@ public class InvestmentManagement {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     // Helper Method to Select Risk Category
     static Risk_Cat selectRiskCategory() {
         System.out.println("Select Risk Category:");
@@ -278,6 +321,11 @@ public class InvestmentManagement {
         }
     }
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     // Helper Method to Prompt for Date Input
     static LocalDate promptDate(String label) {
         while (true) {
@@ -290,7 +338,11 @@ public class InvestmentManagement {
         }
     }
 
-    public static void ALZakat(Portfolio portfolio){
+    /**
+     *
+     * @param portfolio
+     */
+    public static void ALZakat(Portfolio portfolio) {
         if (portfolio == null || portfolio.getLiquidAssets().isEmpty()) {
             System.out.println("No investments available for Zakat calculation!");
             return;
@@ -299,24 +351,24 @@ public class InvestmentManagement {
         double rate = Double.parseDouble(scanner.nextLine());
         Zakat_Calc zakatCalc = new Zakat_Calc(rate);
         zakatCalc.calculateZakat(portfolio);
-        while (true){
+        while (true) {
             System.out.println("Do you want to download PDF with zakat details \n(1- Yes, 2- No)");
             int choice = Integer.parseInt(scanner.nextLine());
-            if (choice == 1){
+            if (choice == 1) {
                 System.out.println("Enter file name ");
                 String filename = scanner.nextLine();
-                zakatCalc.generateZakatReport(portfolio , filename);
+                zakatCalc.generateZakatReport(portfolio, filename);
                 break;
             } else if (choice == 2) {
                 return;
-            }
-            else {
+            } else {
                 System.out.println("Invalid choice. Enter 1 or 2.");
                 continue;
             }
         }
+    }
 
-    public static void connectBank(){
+    public static void connectBank () {
         Bank_Connector bank = new Bank_Connector();
         System.out.println("Enter bank name");
         String bankName = scanner.nextLine();
@@ -325,7 +377,8 @@ public class InvestmentManagement {
         String CardNo = scanner.nextLine();
         System.out.println("Enter card expiry (mm/yyyy)");
         String Expiry = scanner.nextLine();
-        bank.inputAccountDetails(CardNo ,Expiry);
+        bank.inputAccountDetails(CardNo, Expiry);
         bank.isConnected();
     }
 }
+
