@@ -5,7 +5,11 @@ public class UserManager {
     public static final String filename = "users.ser";
 
 
-
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
     private List<UltraSimpleUserStorage.User> loadUsers()throws IOException{
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))){
             return (List<UltraSimpleUserStorage.User>) ois.readObject();
@@ -16,12 +20,25 @@ public class UserManager {
         }
     }
 
+    /**
+     *
+     * @param users
+     * @throws IOException
+     */
     private void saveUsers(List<UltraSimpleUserStorage.User> users) throws IOException{
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))){
             oos.writeObject(users);
         }
     }
 
+    /**
+     *
+     * @param name
+     * @param email
+     * @param username
+     * @param pass
+     * @throws IOException
+     */
     public void registerUser(String name, String email, String username, String pass) throws IOException{
       List<UltraSimpleUserStorage.User> users = loadUsers();
       UltraSimpleUserStorage.User newUser = new UltraSimpleUserStorage.User();
@@ -30,6 +47,13 @@ public class UserManager {
       saveUsers(users);
     }
 
+    /**
+     *
+     * @param username
+     * @param pass
+     * @return
+     * @throws IOException
+     */
     public boolean loginUser(String username, String pass) throws IOException{
         List<UltraSimpleUserStorage.User> users = loadUsers();
         return users.stream().filter(Objects::nonNull).anyMatch(user ->{
