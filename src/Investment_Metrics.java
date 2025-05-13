@@ -11,6 +11,10 @@ public class Investment_Metrics implements Serializable {
     private TreeMap<LocalDate, Double> valueSnapshots;   // Using TreeMap for sorted dates
     private double initialInvestment;
 
+    /**
+     *
+     * @param initialInvestment
+     */
     // Constructor to initialize initial investment
     public Investment_Metrics(double initialInvestment) {
         this.initialInvestment = initialInvestment;
@@ -18,6 +22,10 @@ public class Investment_Metrics implements Serializable {
         this.valueSnapshots = new TreeMap<>();
     }
 
+    /**
+     *
+     * @return
+     */
     // Calculates Return on Investment (ROI) as a percentage
     public double calculateROI() {
         if (valueSnapshots.isEmpty() || initialInvestment == 0) {
@@ -29,6 +37,10 @@ public class Investment_Metrics implements Serializable {
         return current_ROI;
     }
 
+    /**
+     *
+     * @return
+     */
     // Returns asset distribution with percentages
     public Map<Asset_Type, Double> getAssetDistribution() {
         // Calculate percentages if the total sum is not 100%
@@ -39,11 +51,21 @@ public class Investment_Metrics implements Serializable {
         return new TreeMap<>(asset_distribution); // Return a new TreeMap to avoid direct modification
     }
 
+    /**
+     *
+     * @return
+     */
     // Returns valuation trends with dates sorted chronologically
     public Map<LocalDate, Double> getValuationTrends() {
         return new TreeMap<>(valueSnapshots); // Returns sorted map of value trends
     }
 
+    /**
+     *
+     * @param type
+     * @param valueChange
+     * @param date
+     */
     // Updates metrics with new data (asset type, value change, and date)
     public void updateMetrics(Asset_Type type, double valueChange, LocalDate date) {
         // Update asset distribution
@@ -57,11 +79,19 @@ public class Investment_Metrics implements Serializable {
         calculateROI();
     }
 
+    /**
+     *
+     * @return
+     */
     // Get current ROI value
     public double getCurrentROI() {
         return current_ROI;
     }
 
+    /**
+     *
+     * @return
+     */
     // Get initial investment value
     public double getInitialInvestment() {
         return initialInvestment;
