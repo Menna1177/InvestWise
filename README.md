@@ -15,7 +15,7 @@
 - `src/`: Contains all the source code files.
 - `Asset.java`, `Investment.java`: Core classes for handling assets and investments.
 - `Goal.java`, `Goal_Manager.java`: Manage user investment goals.
-- `Halal_Screener.java`: Checks if investments are halal.
+- `Zakat_Calc.java`: Checks if investments are halal and calculate zakat amount.
 - `Bank_Connector.java`: Handles connections to banks.
 
 ## How to Run
